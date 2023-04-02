@@ -26,4 +26,8 @@ BadRouter::get('/redirect', function() {
   BadRouter::redirect('/about');
 });
 
+BadRouter::get('/user/{id}', function ($id) {
+  echo "User ID: " . $id;
+});
+
 BadRouter::run();

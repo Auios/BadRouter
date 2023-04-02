@@ -27,8 +27,8 @@ class BadRouter {
     exit;
   }
 
-  public static function render($view, $params = array(), $layout = "layout") {
-    extract($params);
+  public static function render($view, $locals = array(), $layout = "layout") {
+    extract($locals);
     ob_start();
     include 'views/' . $view . '.php';
     $content = ob_get_clean();
@@ -45,10 +45,30 @@ class BadRouter {
     $method = $_SERVER['REQUEST_METHOD'];
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-    if (isset(self::$routes[$method][$path])) {
-      $callback = self::$routes[$method][$path];
-      $callback();
-    } else {
+    $routeFound = false;
+
+    if (isset(self::$routes[$method])) {
+      foreach (self::$routes[$method] as $route => $callback) {
+        // Replace route parameters with regex pattern
+        $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[^/]+)', $route);
+
+        // Check if the URL path matches the route pattern
+        if (preg_match('~^' . $pattern . '$~', $path, $matches)) {
+          $routeFound = true;
+
+          // Filter out numeric keys from the matches array
+          $params = array_filter($matches, function ($key) {
+              return !is_numeric($key);
+          }, ARRAY_FILTER_USE_KEY);
+
+          // Call the callback function with route parameters as arguments
+          call_user_func_array($callback, $params);
+          break;
+        }
+      }
+    }
+
+    if (!$routeFound) {
       self::set_content_type("html");
       http_response_code(404);
       echo "404 Not Found";
