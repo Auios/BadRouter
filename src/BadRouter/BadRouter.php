@@ -1,12 +1,15 @@
 <?php
 class BadRouter {
-  private static $routes = array();
+  private static $routes = [];
+  private static $middlewares = [];
   private static $validContentTypes = [
     'html' => 'text/html',
     'json' => 'application/json',
     'xml' => 'application/xml',
   ];
-  private static $currentContentType = "text/html";
+  private static $currentContentType = 'text/html';
+  private static $public_dir = 'public';
+  private static $views_dir = 'views';
 
   public static function get($route, $callback) {
     self::$routes['GET'][$route] = $callback;
@@ -22,25 +25,46 @@ class BadRouter {
     }
   }
 
+  public static function set_public($public_dir) {
+    self::$public_dir = $public_dir;
+  }
+
+  public static function set_views($views_dir) {
+    self::$views_dir = $views_dir;
+  }
+
   public static function redirect($path) {
     header('Location: ' . $path);
     exit;
   }
 
-  public static function render($view, $locals = array(), $layout = "layout") {
+  public static function render($view, $locals = [], $layout = '/layout') {
     extract($locals);
     ob_start();
-    include 'views/' . $view . '.php';
+    include self::$views_dir . $view . '.php';
     $content = ob_get_clean();
 
-    ob_start();
-    include 'views/' . $layout . '.php';
-    $output = ob_get_clean();
-    $output = str_replace('src="/', 'src="/public/', $output);
+    if($layout == null) {
+      $output = $content;
+    } else {
+      ob_start();
+      include self::$views_dir . $layout . '.php';
+      $output = ob_get_clean();
+    }
+
     echo $output;
   }
 
+  public static function use($middleware, $routes = []) {
+    self::$middlewares[] = [
+      'middleware' => $middleware,
+      'routes' => $routes,
+    ];
+  }
+
   public static function run() {
+    define("PUBLIC_DIR", self::$public_dir);
+    // define("VIEWS_DIR", self::$views_dir);
     header('Content-Type: ' . self::$currentContentType);
     $method = $_SERVER['REQUEST_METHOD'];
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -69,9 +93,9 @@ class BadRouter {
     }
 
     if (!$routeFound) {
-      self::set_content_type("html");
+      self::set_content_type('html');
       http_response_code(404);
-      echo "404 Not Found";
+      echo '404 Not Found';
     }
   }
 }
