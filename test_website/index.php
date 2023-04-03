@@ -51,9 +51,15 @@ BadRouter::get('/user/{id}', function ($id) {
   BadRouter::render('/user', $locals);
 });
 
-BadRouter::get('/admin', function () {
+BadRouter::get('/admin', function() {
   restricted();
   BadRouter::render('/admin/page');
+});
+
+BadRouter::post('/api/login', function() {
+  echo json_encode([
+    'success' => true,
+  ]);
 });
 
 BadRouter::set_public('/public');
