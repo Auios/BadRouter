@@ -1,14 +1,19 @@
 <?php
 require('../src/BadRouter/BadRouter.php');
 
-BadRouter::use(function ($path, $params) {
+BadRouter::use(function() {
+  // if (!isset($_SESSION['user'])) {
+  //   BadRouter::redirect('/login');
+  //   return false;
+  // }
+});
+
+function restricted() {
   if (!isset($_SESSION['user'])) {
     BadRouter::redirect('/login');
     return false;
   }
-}, [
-  '/admin/*'
-]);
+}
 
 BadRouter::get('/', function() {
   $locals = [
@@ -47,6 +52,7 @@ BadRouter::get('/user/{id}', function ($id) {
 });
 
 BadRouter::get('/admin', function () {
+  restricted();
   BadRouter::render('/admin/page');
 });
 

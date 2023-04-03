@@ -1,4 +1,5 @@
 <?php
+
 class BadRouter {
   private static $routes = [];
   private static $middlewares = [];
@@ -55,11 +56,8 @@ class BadRouter {
     echo $output;
   }
 
-  public static function use($middleware, $routes = []) {
-    self::$middlewares[] = [
-      'middleware' => $middleware,
-      'routes' => $routes,
-    ];
+  public static function use($middleware) {
+    self::$middlewares[] = $middleware;
   }
 
   public static function run() {
@@ -79,6 +77,10 @@ class BadRouter {
         // Check if the URL path matches the route pattern
         if (preg_match('~^' . $pattern . '$~', $path, $matches)) {
           $routeFound = true;
+
+          foreach (self::$middlewares as $middleware) {
+            $middleware();
+          }
 
           // Filter out numeric keys from the matches array
           $params = array_filter($matches, function ($key) {
