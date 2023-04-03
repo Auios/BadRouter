@@ -7,6 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
   </head>
   <body class="bg-dark text-light">
+    <script>
+      document.documentElement.setAttribute("data-bs-theme", "dark");
+    </script>
     <div class="container pt-5">
       <nav>
         <ul>
@@ -15,6 +18,7 @@
           <li><a href="/contact">Contact</a></li>
           <li><a href="/user/42">User</a></li>
           <li><a href="/admin">Admin</a></li>
+          <li><a href="/login">Login</a></li>
           <li><a href="/404">404</a></li>
         </ul>
       </nav>

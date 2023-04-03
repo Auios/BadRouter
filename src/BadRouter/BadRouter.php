@@ -2,6 +2,7 @@
 
 class BadRouter {
   private static $routes = [];
+  private static $errors = [];
   private static $middlewares = [];
   private static $public_dir = 'public';
   private static $views_dir = 'views';
@@ -26,6 +27,10 @@ class BadRouter {
 
   public static function set_views($views_dir) {
     self::$views_dir = $views_dir;
+  }
+
+  public static function set_error($code, $callback) {
+    self::$errors[$code] = $callback;
   }
 
   public static function get($route, $callback) {
@@ -107,7 +112,12 @@ class BadRouter {
     if (!$routeFound) {
       self::set_content_type('html');
       http_response_code(404);
-      echo '404 Not Found';
+      if(isset(self::$errors[404])) {
+        $cb = self::$errors[404];
+        $cb();
+      } else {
+        echo '404 Not Found';
+      }
     }
   }
 }

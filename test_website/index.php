@@ -62,6 +62,13 @@ BadRouter::post('/api/login', function() {
   ]);
 });
 
+BadRouter::set_error(404, function() {
+  $locals = [
+    'route' => parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
+  ];
+  BadRouter::render('/404', $locals);
+});
+
 BadRouter::set_public('/public');
 BadRouter::set_views(__DIR__ . '/views');
 BadRouter::run();
