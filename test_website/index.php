@@ -66,7 +66,7 @@ BadRouter::set_error(404, function() {
   $locals = [
     'route' => parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
   ];
-  BadRouter::render('/404', $locals);
+  BadRouter::render('/404', $locals, null);
 });
 
 BadRouter::set_public('/public');
