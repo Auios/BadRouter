@@ -3,22 +3,16 @@
 class BadRouter {
   private static $routes = [];
   private static $middlewares = [];
+  private static $public_dir = 'public';
+  private static $views_dir = 'views';
+
+  // Content types
   private static $validContentTypes = [
     'html' => 'text/html',
     'json' => 'application/json',
     'xml' => 'application/xml',
   ];
   private static $currentContentType = 'text/html';
-  private static $public_dir = 'public';
-  private static $views_dir = 'views';
-
-  public static function get($route, $callback) {
-    self::$routes['GET'][$route] = $callback;
-  }
-
-  public static function post($route, $callback) {
-    self::$routes['POST'][$route] = $callback;
-  }
 
   public static function set_content_type($type) {
     if (isset(self::$validContentTypes[$type])) {
@@ -32,6 +26,22 @@ class BadRouter {
 
   public static function set_views($views_dir) {
     self::$views_dir = $views_dir;
+  }
+
+  public static function get($route, $callback) {
+    self::$routes['GET'][$route] = $callback;
+  }
+
+  public static function post($route, $callback) {
+    self::$routes['POST'][$route] = $callback;
+  }
+
+  public static function put($route, $callback) {
+    self::$routes['PUT'][$route] = $callback;
+  }
+
+  public static function delete($route, $callback) {
+    self::$routes['DELETE'][$route] = $callback;
   }
 
   public static function redirect($path) {
