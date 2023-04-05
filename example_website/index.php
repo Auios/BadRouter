@@ -1,78 +1,80 @@
 <?php
-require('../src/BadRouter/BadRouter.php');
+require_once('./vendor/autoload.php');
 
-BadRouter::use(function() {
+use BadRouter\Router;
+
+Router::use(function() {
   // Middleware
 });
 
 // Setup routes
-BadRouter::get('/', function() {
+Router::get('/', function() {
   $locals = [
     'message' => 'Hello world!'
   ];
 
-  BadRouter::render('/home', $locals);
+  Router::render('/home', $locals);
 });
 
-BadRouter::get('/login', function() {
-  BadRouter::render('/login', [], null);
+Router::get('/login', function() {
+  Router::render('/login', [], null);
 });
 
-BadRouter::get('/about', function() {
+Router::get('/about', function() {
   $locals = [
     'message' => 'We are awesome!',
   ];
 
-  BadRouter::render('/about', $locals);
+  Router::render('/about', $locals);
 });
 
-BadRouter::get('/message', function() {
-  BadRouter::set_content_type('json');
+Router::get('/message', function() {
+  Router::set_content_type('json');
   echo json_encode(array('message' => 'About Us'));
 });
 
-BadRouter::get('/redirectMe', function() {
-  BadRouter::redirect('/about');
+Router::get('/redirectMe', function() {
+  Router::redirect('/about');
 });
 
-BadRouter::get('/user/{id}', function ($id) {
+Router::get('/user/{id}', function ($id) {
   $locals = [
     "id" => $id
   ];
-  BadRouter::render('/user', $locals);
+  Router::render('/user', $locals);
 });
 
 // Restricted /admin route
 function restricted() {
   if (!isset($_SESSION['user'])) {
-    BadRouter::redirect('/login');
+    Router::redirect('/login');
     return false;
   }
 }
 
-BadRouter::get('/admin', function() {
+Router::get('/admin', function() {
   restricted();
-  BadRouter::render('/admin/page');
+  Router::render('/admin/page');
 });
 
 // POST
-BadRouter::post('/api/login', function() {
+Router::post('/api/login', function() {
   echo json_encode([
     'success' => true,
   ]);
 });
 
 // Set 404 page
-BadRouter::set_error(404, function() {
+Router::set_error(404, function() {
   $locals = [
     'route' => parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
   ];
-  BadRouter::render('/404', $locals, null);
+  Router::render('/404', $locals, null);
 });
 
 // Configure directories
-BadRouter::set_public('/public');
-BadRouter::set_views(__DIR__ . '/views');
+Router::set_public('/public');
+Router::set_views(__DIR__ . '/views');
 
 // Run
-BadRouter::run();
+Router::run();
