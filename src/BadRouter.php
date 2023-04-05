@@ -1,6 +1,8 @@
 <?php
 
-class BadRouter {
+namespace BadRouter;
+
+class Router {
   private static $routes = [];
   private static $errors = [];
   private static $middlewares = [];
