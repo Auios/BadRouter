@@ -2,19 +2,10 @@
 require('../src/BadRouter/BadRouter.php');
 
 BadRouter::use(function() {
-  // if (!isset($_SESSION['user'])) {
-  //   BadRouter::redirect('/login');
-  //   return false;
-  // }
+  // Middleware
 });
 
-function restricted() {
-  if (!isset($_SESSION['user'])) {
-    BadRouter::redirect('/login');
-    return false;
-  }
-}
-
+// Setup routes
 BadRouter::get('/', function() {
   $locals = [
     'message' => 'Hello world!'
@@ -40,7 +31,7 @@ BadRouter::get('/message', function() {
   echo json_encode(array('message' => 'About Us'));
 });
 
-BadRouter::get('/redirect', function() {
+BadRouter::get('/redirectMe', function() {
   BadRouter::redirect('/about');
 });
 
@@ -51,17 +42,27 @@ BadRouter::get('/user/{id}', function ($id) {
   BadRouter::render('/user', $locals);
 });
 
+// Restricted /admin route
+function restricted() {
+  if (!isset($_SESSION['user'])) {
+    BadRouter::redirect('/login');
+    return false;
+  }
+}
+
 BadRouter::get('/admin', function() {
   restricted();
   BadRouter::render('/admin/page');
 });
 
+// POST
 BadRouter::post('/api/login', function() {
   echo json_encode([
     'success' => true,
   ]);
 });
 
+// Set 404 page
 BadRouter::set_error(404, function() {
   $locals = [
     'route' => parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
@@ -69,6 +70,9 @@ BadRouter::set_error(404, function() {
   BadRouter::render('/404', $locals, null);
 });
 
+// Configure directories
 BadRouter::set_public('/public');
 BadRouter::set_views(__DIR__ . '/views');
+
+// Run
 BadRouter::run();
