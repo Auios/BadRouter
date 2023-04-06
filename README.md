@@ -3,12 +3,14 @@
 A minimalist router inspired by Ruby's Sinatra router.
 
 # Install
-1. Run `composer require auios/badrouter` in your project directory to install the package and its dependencies.
-2. Require the autoloader. At the beginning of your PHP file, require the Composer autoloader by adding this line of code:
+**1.** Run `composer require auios/badrouter` in your project directory to install the package and its dependencies.
+
+**2.** Require the autoloader. At the beginning of your PHP file, require the Composer autoloader by adding this line of code:
 ```php
 require_once('./vendor/autoload.php');
 ```
-3. Use the `Router` static class.
+
+**3.** Use the `Router` static class.
 ```php
 Router::get('/user/{id}', function ($id) {
   $locals = [
@@ -17,12 +19,14 @@ Router::get('/user/{id}', function ($id) {
   Router::render('/user', $locals);
 });
 ```
-4. Configure the view and public directories.
+
+**4.** Configure the view and public directories.
 ```php
 Router::set_public('/public');
 Router::set_views(__DIR__ . '/views');
 ```
-5. After the router is configured, run it.
+
+**5.** After the router is configured, run it.
 ```php
 Router::run();
 ```
