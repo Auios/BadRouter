@@ -1,5 +1,5 @@
 <?php
-require_once('./vendor/autoload.php');
+require_once('../src/Router.php');
 
 use BadRouter\Router;
 
@@ -73,6 +73,7 @@ Router::set_error(404, function() {
 });
 
 // Configure directories
+Router::set_base_path('/example_website');
 Router::set_public('/public');
 Router::set_views(__DIR__ . '/views');
 

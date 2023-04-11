@@ -13,13 +13,13 @@
     <div class="container pt-5">
       <nav>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
-          <li><a href="/user/42">User</a></li>
-          <li><a href="/admin">Admin</a></li>
-          <li><a href="/login">Login</a></li>
-          <li><a href="/404">404</a></li>
+          <li><a href="<?=BASE_PATH?>/">Home</a></li>
+          <li><a href="<?=BASE_PATH?>/about">About</a></li>
+          <li><a href="<?=BASE_PATH?>/contact">Contact</a></li>
+          <li><a href="<?=BASE_PATH?>/user/42">User</a></li>
+          <li><a href="<?=BASE_PATH?>/admin">Admin</a></li>
+          <li><a href="<?=BASE_PATH?>/login">Login</a></li>
+          <li><a href="<?=BASE_PATH?>/404">404</a></li>
         </ul>
       </nav>
       <?= $content ?>

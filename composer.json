@@ -1,5 +1,5 @@
 {
-  "name": "auios/badrouter",
+  "name": "badluck/badrouter",
   "description": "A simple Sinatra inspired router class for PHP",
   "type": "library",
   "keywords": [

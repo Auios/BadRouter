@@ -8,6 +8,7 @@ class Router {
   private static $middlewares = [];
   private static $public_dir = 'public';
   private static $views_dir = 'views';
+  private static $base_path = '';
 
   // Content types
   private static $validContentTypes = [
@@ -21,14 +22,21 @@ class Router {
     if (isset(self::$validContentTypes[$type])) {
       header('Content-Type: ' . self::$validContentTypes[$type]);
     }
+    else {
+      // TODO: Throw an error
+    }
   }
 
-  public static function set_public($public_dir) {
-    self::$public_dir = $public_dir;
+  public static function set_public($dir) {
+    self::$public_dir = $dir;
   }
 
-  public static function set_views($views_dir) {
-    self::$views_dir = $views_dir;
+  public static function set_views($dir) {
+    self::$views_dir = $dir;
+  }
+
+  public static function set_base_path($path) {
+    self::$base_path = $path;
   }
 
   public static function set_error($code, $callback) {
@@ -52,25 +60,25 @@ class Router {
   }
 
   public static function redirect($path) {
-    header('Location: ' . $path);
+    header('Location: ' . self::$base_path . $path);
     exit;
   }
 
   public static function render($view, $locals = [], $layout = '/layout') {
     extract($locals);
     ob_start();
-    include self::$views_dir . $view . '.php';
+    include(self::$views_dir . $view . '.php');
     $content = ob_get_clean();
 
     if($layout == null) {
       $output = $content;
     } else {
       ob_start();
-      include self::$views_dir . $layout . '.php';
+      include(self::$views_dir . $layout . '.php');
       $output = ob_get_clean();
     }
 
-    echo $output;
+    echo($output);
   }
 
   public static function use($middleware) {
@@ -78,11 +86,14 @@ class Router {
   }
 
   public static function run() {
-    define("PUBLIC_DIR", self::$public_dir);
-    // define("VIEWS_DIR", self::$views_dir);
+    define('BASE_PATH', self::$base_path);
+    define('PUBLIC_PATH', BASE_PATH . self::$public_dir);
+    // define('VIEWS_DIR', self::$views_dir);
+
     header('Content-Type: ' . self::$currentContentType);
     $method = $_SERVER['REQUEST_METHOD'];
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $path = str_replace(BASE_PATH, '', $path);
 
     $routeFound = false;
 
@@ -118,7 +129,7 @@ class Router {
         $cb = self::$errors[404];
         $cb();
       } else {
-        echo '404 Not Found';
+        echo('404 Not Found');
       }
     }
   }
