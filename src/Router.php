@@ -81,19 +81,29 @@ class Router {
     echo($output);
   }
 
+  public static function json($data) {
+    self::set_content_type('json');
+    echo(json_encode($data));
+  }
+
   public static function use($middleware) {
     self::$middlewares[] = $middleware;
   }
 
   public static function run() {
+    // Defines
     define('BASE_PATH', self::$base_path);
     define('PUBLIC_PATH', BASE_PATH . self::$public_dir);
-    // define('VIEWS_DIR', self::$views_dir);
+    define('VIEWS_PATH', self::$views_dir);
 
+    // Set content type
     header('Content-Type: ' . self::$currentContentType);
     $method = $_SERVER['REQUEST_METHOD'];
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $path = str_replace(BASE_PATH, '', $path);
+
+    // If route is empty, set it to "/"
+    if(strlen($path) === 0) $path = '/';
 
     $routeFound = false;
 
