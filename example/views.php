@@ -1,14 +1,12 @@
 <?php
-require_once('../src/Router.php');
 
 use BadRouter\Router;
 
-Router::use(function() {
-  // Middleware
+Router::get('/', function() {
+  Router::redirect('/home');
 });
 
-// Setup routes
-Router::get('/', function() {
+Router::get('/home', function() {
   $locals = [
     'message' => 'Hello world!'
   ];
@@ -44,38 +42,7 @@ Router::get('/user/{id}', function ($id) {
   Router::render('/user', $locals);
 });
 
-// Restricted /admin route
-function restricted() {
-  if (!isset($_SESSION['user'])) {
-    Router::redirect('/login');
-    return false;
-  }
-}
-
 Router::get('/admin', function() {
   restricted();
   Router::render('/admin/page');
 });
-
-// POST
-Router::post('/api/login', function() {
-  echo json_encode([
-    'success' => true,
-  ]);
-});
-
-// Set 404 page
-Router::set_error(404, function() {
-  $locals = [
-    'route' => parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
-  ];
-  Router::render('/404', $locals, null);
-});
-
-// Configure directories
-Router::set_base_path('/example_website');
-Router::set_public('/public');
-Router::set_views(__DIR__ . '/views');
-
-// Run
-Router::run();

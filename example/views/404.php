@@ -16,7 +16,7 @@
   </body>
 </html>
 
-<!-- <div class="bg-image" style="background-image: url('<?=PUBLIC_DIR?>/images/bg-dark.jpg'); height: 100vh"></div> -->
+<!-- <div class="bg-image" style="background-image: url('<?= PUBLIC_PATH ?>/images/bg-dark.jpg'); height: 100vh"></div> -->
     <!-- <div class="container pt-5">
       <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
@@ -26,7 +26,7 @@
                   <div class="card-body">
                     <h1>Oops!</h1>
                     <div>We can't find that page.</div>
-                    <img src="<?=PUBLIC_DIR?>/images/404-error-dark.png" class="img-fluid" alt="404 Error" />
+                    <img src="<?= PUBLIC_PATH ?>/images/404-error-dark.png" class="img-fluid" alt="404 Error" />
                     <a href="/" class="btn btn-sm btn-primary mt-3">Return Home</a>
                   </div>
                 </div>
