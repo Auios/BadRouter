@@ -3,7 +3,7 @@
 use BadRouter\Router;
 
 Router::post('/api/login', function() {
-  echo json_encode([
+  Router::json([
     'success' => true,
   ]);
 });
