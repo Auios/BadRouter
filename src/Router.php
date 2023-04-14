@@ -8,7 +8,7 @@ class Router {
   private static $middlewares = [];
   private static $public_dir = 'public';
   private static $views_dir = 'views';
-  private static $base_path = '/';
+  private static $base_path = '';
 
   // Content types
   private static $validContentTypes = [
@@ -35,8 +35,8 @@ class Router {
     self::$views_dir = $dir;
   }
 
-  public static function set_base_path($path = '/') {
-    if(strlen($path) == 0) $path = '/';
+  public static function set_base_path($path) {
+    if($path == '/') $path = '';
     self::$base_path = $path;
   }
 
@@ -61,7 +61,7 @@ class Router {
   }
 
   public static function redirect($path) {
-    header('Location: ' . self::$base_path . $path);
+    header('Location: ' . BASE_PATH . $path);
     exit;
   }
 
