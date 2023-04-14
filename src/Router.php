@@ -104,17 +104,17 @@ class Router {
     $path = str_replace(BASE_PATH, '', $path);
 
     $request = [
-      'route' => $path,
-      'method' => $_SERVER['REQUEST_METHOD'],
-      'address' => $_SERVER['REMOTE_ADDR'],
-      'port' => $_SERVER['REMOTE_PORT'],
-      'platform' => $_SERVER['HTTP_SEC_CH_UA_PLATFORM'],
-      'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-      'accept' => $_SERVER['HTTP_ACCEPT'],
-      'encoding' => $_SERVER['HTTP_ACCEPT_ENCODING'],
-      'language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
-      'referer' => $_SERVER['HTTP_REFERER'],
-      'time' => $_SERVER['REQUEST_TIME_FLOAT'],
+      'route' => $path ?? null,
+      'method' => $_SERVER['REQUEST_METHOD'] ?? null,
+      'address' => $_SERVER['REMOTE_ADDR'] ?? null,
+      'port' => $_SERVER['REMOTE_PORT'] ?? null,
+      'platform' => $_SERVER['HTTP_SEC_CH_UA_PLATFORM'] ?? null,
+      'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+      'accept' => $_SERVER['HTTP_ACCEPT'] ?? null,
+      'encoding' => $_SERVER['HTTP_ACCEPT_ENCODING'] ?? null,
+      'language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null,
+      'referer' => $_SERVER['HTTP_REFERER'] ?? null,
+      'time' => $_SERVER['REQUEST_TIME_FLOAT'] ?? null,
     ];
 
     // If route is empty, set it to "/"
