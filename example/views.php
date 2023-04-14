@@ -2,6 +2,13 @@
 
 use BadRouter\Router;
 
+Router::set_error(404, function() {
+  $locals = [
+    'route' => parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH),
+  ];
+  Router::render('/404', $locals);
+});
+
 Router::get('/', function() {
   Router::redirect('/home');
 });
@@ -14,35 +21,17 @@ Router::get('/home', function() {
   Router::render('/home', $locals);
 });
 
-Router::get('/login', function() {
-  Router::render('/login', [], null);
-});
-
-Router::get('/about', function() {
-  $locals = [
-    'message' => 'We are awesome!',
-  ];
-
-  Router::render('/about', $locals);
-});
-
-Router::get('/message', function() {
-  Router::set_content_type('json');
-  echo json_encode(array('message' => 'About Us'));
-});
-
-Router::get('/redirectMe', function() {
-  Router::redirect('/about');
-});
-
-Router::get('/user/{id}', function ($id) {
+Router::get('/dynamic/{id}', function ($id) {
   $locals = [
     "id" => $id
   ];
-  Router::render('/user', $locals);
+  Router::render('/dynamic', $locals);
+});
+
+Router::get('/login', function() {
+  Router::render('/login');
 });
 
 Router::get('/admin', function() {
-  restricted();
   Router::render('/admin/page');
 });
