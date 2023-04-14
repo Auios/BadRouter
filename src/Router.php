@@ -35,8 +35,8 @@ class Router {
     self::$views_dir = $dir;
   }
 
-  public static function set_base_path($path) {
-    if(strlen($path, 0)) $path = '/';
+  public static function set_base_path($path = '/') {
+    if(strlen($path) == 0) $path = '/';
     self::$base_path = $path;
   }
 
