@@ -2,6 +2,8 @@
 
 A minimalist router inspired by Ruby's Sinatra router.
 
+Visit the official documentation page here: https://badrouter.badluck.io
+
 # Install
 **1.** Run `composer require auios/badrouter` in your project directory to install the package and its dependencies.
 
