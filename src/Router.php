@@ -8,7 +8,7 @@ class Router {
   private static $middlewares = [];
   private static $public_dir = 'public';
   private static $views_dir = 'views';
-  private static $base_path = '';
+  private static $base_path = '/';
 
   // Content types
   private static $validContentTypes = [
@@ -36,6 +36,7 @@ class Router {
   }
 
   public static function set_base_path($path) {
+    if(strlen($path, 0)) $path = '/';
     self::$base_path = $path;
   }
 
@@ -102,6 +103,20 @@ class Router {
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $path = str_replace(BASE_PATH, '', $path);
 
+    $request = [
+      'route' => $path,
+      'method' => $_SERVER['REQUEST_METHOD'],
+      'address' => $_SERVER['REMOTE_ADDR'],
+      'port' => $_SERVER['REMOTE_PORT'],
+      'platform' => $_SERVER['HTTP_SEC_CH_UA_PLATFORM'],
+      'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+      'accept' => $_SERVER['HTTP_ACCEPT'],
+      'encoding' => $_SERVER['HTTP_ACCEPT_ENCODING'],
+      'language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+      'referer' => $_SERVER['HTTP_REFERER'],
+      'time' => $_SERVER['REQUEST_TIME_FLOAT'],
+    ];
+
     // If route is empty, set it to "/"
     if(strlen($path) === 0) $path = '/';
 
@@ -117,7 +132,7 @@ class Router {
           $routeFound = true;
 
           foreach (self::$middlewares as $middleware) {
-            $middleware();
+            $middleware($request);
           }
 
           // Filter out numeric keys from the matches array
