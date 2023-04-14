@@ -1,0 +1,27 @@
+name: Deploy badrouter.badluck.io
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+    # - name: Create file with commit SHA
+    #   run: echo $GITHUB_SHA > src/sha.txt
+    - name: Deploy application
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
+        source: "src/*"
+        target: "/apps/badrouter"
+        rm: true
+        strip_components: 1
