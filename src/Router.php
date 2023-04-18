@@ -64,9 +64,13 @@ class Router {
     self::$routes['DELETE'][$route] = $callback;
   }
 
-  public static function redirect(string $path):void {
-    header('Location: ' . BASE_PATH . $path);
+  public static function redirect(string $route):void {
+    header('Location: ' . BASE_PATH . $route);
     exit;
+  }
+
+  public static function execute_route(string $method, string $route) {
+    self::$routes[$method][$route]();
   }
 
   public static function render(string $view, array $locals = [], ?string $layout = '/layout'):void {
@@ -113,7 +117,7 @@ class Router {
     $routeFound = false;
 
     if(isset(self::$routes[$request->method])) {
-      foreach (self::$routes[$request->method] as $route => $callback) {
+      foreach(self::$routes[$request->method] as $route => $callback) {
         // Replace route parameters with regex pattern
         $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[^/]+)', $route);
 
