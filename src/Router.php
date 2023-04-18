@@ -2,24 +2,28 @@
 
 namespace BadRouter;
 
+use Closure;
+
+require('Request.php');
+
 class Router {
-  private static $routes = [];
-  private static $errors = [];
-  private static $middlewares = [];
-  private static $public_dir = 'public';
-  private static $views_dir = 'views';
-  private static $base_path = '';
+  private static array  $routes = [];
+  private static array  $errors = [];
+  private static array  $middlewares = [];
+  private static string $public_dir = 'public';
+  private static string $views_dir = 'views';
+  private static string $base_path = '';
 
   // Content types
-  private static $validContentTypes = [
+  private static array $validContentTypes = [
     'html' => 'text/html',
     'json' => 'application/json',
     'xml' => 'application/xml',
   ];
-  private static $currentContentType = 'text/html';
+  private static string $currentContentType = 'text/html';
 
-  public static function set_content_type($type) {
-    if (isset(self::$validContentTypes[$type])) {
+  public static function set_content_type(string $type):void {
+    if(isset(self::$validContentTypes[$type])) {
       header('Content-Type: ' . self::$validContentTypes[$type]);
     }
     else {
@@ -27,71 +31,71 @@ class Router {
     }
   }
 
-  public static function set_public($dir) {
+  public static function set_public(string $dir):void {
     self::$public_dir = $dir;
   }
 
-  public static function set_views($dir) {
+  public static function set_views(string $dir):void {
     self::$views_dir = $dir;
   }
 
-  public static function set_base_path($path) {
+  public static function set_base_path(string $path):void {
     if($path == '/') $path = '';
     self::$base_path = $path;
   }
 
-  public static function set_error($code, $callback) {
+  public static function set_error(int $code, Closure $callback):void {
     self::$errors[$code] = $callback;
   }
 
-  public static function get($route, $callback) {
+  public static function get(string $route, Closure $callback):void {
     self::$routes['GET'][$route] = $callback;
   }
 
-  public static function post($route, $callback) {
+  public static function post(string $route, Closure $callback):void {
     self::$routes['POST'][$route] = $callback;
   }
 
-  public static function put($route, $callback) {
+  public static function put(string $route, Closure $callback):void {
     self::$routes['PUT'][$route] = $callback;
   }
 
-  public static function delete($route, $callback) {
+  public static function delete(string $route, Closure $callback):void {
     self::$routes['DELETE'][$route] = $callback;
   }
 
-  public static function redirect($path) {
+  public static function redirect(string $path):void {
     header('Location: ' . BASE_PATH . $path);
     exit;
   }
 
-  public static function render($view, $locals = [], $layout = '/layout') {
+  public static function render(string $view, array $locals = [], string $layout = '/layout'):void {
     extract($locals);
     ob_start();
-    include(self::$views_dir . $view . '.php');
+    include(VIEWS_PATH . $view . '.php');
     $content = ob_get_clean();
 
     if($layout == null) {
       $output = $content;
     } else {
       ob_start();
-      include(self::$views_dir . $layout . '.php');
+      include(VIEWS_PATH . $layout . '.php');
       $output = ob_get_clean();
     }
 
     echo($output);
   }
 
-  public static function json($data) {
+  public static function json(array $data):void {
     self::set_content_type('json');
     echo(json_encode($data));
   }
 
-  public static function use($middleware) {
+  public static function use(Closure $middleware):void {
     self::$middlewares[] = $middleware;
   }
 
-  public static function run() {
+  public static function run():void {
     // Defines
     define('BASE_PATH', self::$base_path);
     define('PUBLIC_PATH', BASE_PATH . self::$public_dir);
@@ -99,36 +103,23 @@ class Router {
 
     // Set content type
     header('Content-Type: ' . self::$currentContentType);
-    $method = $_SERVER['REQUEST_METHOD'];
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $path = str_replace(BASE_PATH, '', $path);
 
-    $request = [
-      'route' => $path ?? null,
-      'method' => $_SERVER['REQUEST_METHOD'] ?? null,
-      'address' => $_SERVER['REMOTE_ADDR'] ?? null,
-      'port' => $_SERVER['REMOTE_PORT'] ?? null,
-      'platform' => $_SERVER['HTTP_SEC_CH_UA_PLATFORM'] ?? null,
-      'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
-      'accept' => $_SERVER['HTTP_ACCEPT'] ?? null,
-      'encoding' => $_SERVER['HTTP_ACCEPT_ENCODING'] ?? null,
-      'language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null,
-      'referer' => $_SERVER['HTTP_REFERER'] ?? null,
-      'time' => $_SERVER['REQUEST_TIME_FLOAT'] ?? null,
-    ];
+    $request = new Request($_SERVER);
+    $request->route = str_replace(BASE_PATH, '', $request->route);
+    $route = $request->route;
 
     // If route is empty, set it to "/"
-    if(strlen($path) === 0) $path = '/';
+    if(strlen($route) === 0) $route = '/';
 
     $routeFound = false;
 
-    if (isset(self::$routes[$method])) {
-      foreach (self::$routes[$method] as $route => $callback) {
+    if(isset(self::$routes[$request->method])) {
+      foreach (self::$routes[$request->method] as $route => $callback) {
         // Replace route parameters with regex pattern
         $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[^/]+)', $route);
 
         // Check if the URL path matches the route pattern
-        if (preg_match('~^' . $pattern . '$~', $path, $matches)) {
+        if(preg_match('~^' . $pattern . '$~', $route, $matches)) {
           $routeFound = true;
 
           foreach (self::$middlewares as $middleware) {
@@ -147,7 +138,7 @@ class Router {
       }
     }
 
-    if (!$routeFound) {
+    if(!$routeFound) {
       self::set_content_type('html');
       http_response_code(404);
       if(isset(self::$errors[404])) {

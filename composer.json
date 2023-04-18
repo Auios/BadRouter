@@ -20,7 +20,9 @@
     }
   ],
   "minimum-stability": "dev",
-  "require": {},
+  "require": {
+    "php": "^7.4.33"
+  },
   "autoload": {
     "psr-4": {
       "BadRouter\\": "src/"

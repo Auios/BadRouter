@@ -116,3 +116,65 @@ Router::set_views(__DIR__ . '/views');
 // Run
 Router::run();
 ```
+
+# Change Log
+Log types:
+* Added
+* Fixed
+* Moved
+* Renamed
+* Updated
+
+## v0.3.0 (2023-04-17)
+* Added class `Request`
+* Added variable type specifications to method params
+* Added variable type to method returns
+* Updated middleware `use` to specify `Closure(Request)` type
+* Updated documentation to include change logs
+
+## v0.2.5 (2023-04-13)
+* Updated documentation to mention https://badrouter.badluck.io
+
+## v0.2.4 (2023-04-13)
+* Fixed (another) bug in `Router::set_base_path`
+* Moved example website from this package and into its own repo at https://github.com/BadLuckSoftware/BadRouter-Example
+* Updated `$request` fields to be `null` if `$_SERVER` field was `null`
+* Updated `Router::redirect` to use `BASE_PATH` instead of `self::$base_path`
+
+## v0.2.3 (2023-04-13)
+* Added GitHub Action to deploy example to https://badrouter.badluck.io
+* Fixed bug in `Router::set_base_path`
+
+## v0.2.2 (2023-04-13)
+* Added `$request` parameter to middleware
+* Added `VIEWS_PATH` global variable
+* Added `Router::json` method
+* Renamed directory `example_website` to `example`
+* Updated example website to reflect the current features of `BadRouter`
+* Updated `Router::set_base_path` to default empty paths to '`/`'
+
+## v0.2.1 (meow)
+* The cow goes moo
+
+## v0.2.0 (2023-04-11)
+* Added `BASE_PATH` global variable
+* Added `Router::set_base_path` method
+* Added Composer keywords
+* Changed `PUBLIC_DIR` global variable to `PUBLIC_PATH`
+* Moved `BadRouter` repo to `BadLuckSoftware` under `badluck` namespace
+* Updated Composer description
+
+## v0.1.3 (2023-04-06)
+* Updated documentation
+
+## v0.1.2 (2023-04-05)
+* Renamed file `BadRouter.php` to `Router.php`
+* Updated example in readme
+* Updated example website to use the correct Router name
+
+## v0.1.1 (2023-04-05)
+* Added forgotten namespace
+* Renamed class `BadRouter` to `Router`
+
+## v0.1.0 (2023-04-05)
+* Added initial BadRouter Composer package
