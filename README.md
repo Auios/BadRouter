@@ -125,6 +125,10 @@ Log types:
 * Renamed
 * Updated
 
+## v0.3.1 (2023-04-17)
+* Fixed route not checking against the `Request` object
+* Fixed `Router::render` `$layout` param not being nullable
+
 ## v0.3.0 (2023-04-17)
 * Added class `Request`
 * Added variable type specifications to method params
