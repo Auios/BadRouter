@@ -69,7 +69,7 @@ class Router {
     exit;
   }
 
-  public static function render(string $view, array $locals = [], string $layout = '/layout'):void {
+  public static function render(string $view, array $locals = [], ?string $layout = '/layout'):void {
     extract($locals);
     ob_start();
     include(VIEWS_PATH . $view . '.php');
@@ -106,10 +106,9 @@ class Router {
 
     $request = new Request($_SERVER);
     $request->route = str_replace(BASE_PATH, '', $request->route);
-    $route = $request->route;
 
     // If route is empty, set it to "/"
-    if(strlen($route) === 0) $route = '/';
+    if(strlen($request->route) === 0) $request->route = '/';
 
     $routeFound = false;
 
@@ -119,7 +118,7 @@ class Router {
         $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[^/]+)', $route);
 
         // Check if the URL path matches the route pattern
-        if(preg_match('~^' . $pattern . '$~', $route, $matches)) {
+        if(preg_match('~^' . $pattern . '$~', $request->route, $matches)) {
           $routeFound = true;
 
           foreach (self::$middlewares as $middleware) {
