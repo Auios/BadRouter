@@ -125,6 +125,9 @@ Log types:
 * Renamed
 * Updated
 
+## v0.3.2 (2023-04-18)
+* Fixed Composer PHP requirements from "^7.4.33" to ">=7.4.33"
+
 ## v0.3.1 (2023-04-17)
 * Fixed route not checking against the `Request` object
 * Fixed `Router::render` `$layout` param not being nullable
