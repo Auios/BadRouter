@@ -70,7 +70,11 @@ class Router {
   }
 
   public static function execute_route(string $method, string $route) {
-    self::$routes[$method][$route]();
+    if(isset(self::$routes[$method])) {
+      if(isset(self::$routes[$method][$route])) {
+        self::$routes[$method][$route]();
+      }
+    }
   }
 
   public static function render(string $view, array $locals = [], ?string $layout = '/layout'):void {
