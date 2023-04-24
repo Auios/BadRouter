@@ -125,6 +125,9 @@ Log types:
 * Renamed
 * Updated
 
+## v0.3.3 (2023-04-24)
+* Fixed warning `$server['HTTP_REFERER']` with null coalescence
+
 ## v0.3.2 (2023-04-18)
 * Fixed Composer PHP requirements from "^7.4.33" to ">=7.4.33"
 
