@@ -122,8 +122,12 @@ Log types:
 * Added
 * Fixed
 * Moved
+* Removed
 * Renamed
 * Updated
+
+## v0.3.4 (2023-04-26)
+* Removed Router::json datatype for input
 
 ## v0.3.3 (2023-04-24)
 * Fixed warning `$server['HTTP_REFERER']` with null coalescence
