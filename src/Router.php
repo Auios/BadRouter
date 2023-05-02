@@ -102,7 +102,7 @@ class Router {
     define('VIEWS_PATH', self::$views_dir);
 
     // Serve static files from the public directory?
-    $filename = $_SERVER['DOCUMENT_ROOT'] . '/public' . $_SERVER['REQUEST_URI'];
+    $filename = $_SERVER['DOCUMENT_ROOT'] . PUBLIC_PATH . $_SERVER['REQUEST_URI'];
     if (file_exists($filename) && is_file($filename)) {
       header('Content-type: ' . Mime::Get($filename));
       header('Content-Disposition: inline;');
