@@ -120,11 +120,16 @@ Router::run();
 # Change Log
 Log types:
 * Added
+* Changed
 * Fixed
 * Moved
 * Removed
 * Renamed
 * Updated
+
+## v0.4.0 (2023-05-01)
+* Added 74 MIME types
+* Changed static files automatically fetched and no longer need PUBLIC_PATH to be specified
 
 ## v0.3.4 (2023-04-26)
 * Removed Router::json datatype for input
