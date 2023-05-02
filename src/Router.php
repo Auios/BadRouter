@@ -3,8 +3,10 @@
 namespace BadRouter;
 
 use Closure;
+use Exception;
 
 require('Request.php');
+require('Mimes.php');
 
 class Router {
   private static array $routes = [];
@@ -13,21 +15,11 @@ class Router {
   private static string $public_dir = 'public';
   private static string $views_dir = 'views';
   private static string $base_path = '';
-
-  // Content types
-  private static array $validContentTypes = [
-    'html' => 'text/html',
-    'json' => 'application/json',
-    'xml' => 'application/xml',
-  ];
   private static string $currentContentType = 'text/html';
 
   public static function set_content_type(string $type): void {
-    if (isset(self::$validContentTypes[$type])) {
-      header('Content-Type: ' . self::$validContentTypes[$type]);
-    } else {
-      // TODO: Throw an error
-    }
+    self::$currentContentType = Mime::Get($type);
+    header('Content-Type: ' . self::$currentContentType);
   }
 
   public static function set_public(string $dir): void {
@@ -91,12 +83,12 @@ class Router {
       $output = ob_get_clean();
     }
 
-    echo ($output);
+    echo $output;
   }
 
   public static function json($data): void {
     self::set_content_type('json');
-    echo (json_encode($data));
+    echo json_encode($data);
   }
 
   public static function use (Closure $middleware): void {
@@ -109,6 +101,16 @@ class Router {
     define('PUBLIC_PATH', BASE_PATH . self::$public_dir);
     define('VIEWS_PATH', self::$views_dir);
 
+    // Serve static files from the public directory?
+    $filename = $_SERVER['DOCUMENT_ROOT'] . '/public' . $_SERVER['REQUEST_URI'];
+    if (file_exists($filename) && is_file($filename)) {
+      header('Content-type: ' . Mime::Get($filename));
+      header('Content-Disposition: inline;');
+      header('Cache-Control: max-age=2600000');
+      readfile($filename);
+      exit;
+    }
+
     // Set content type
     header('Content-Type: ' . self::$currentContentType);
 
@@ -116,8 +118,9 @@ class Router {
     $request->route = str_replace(BASE_PATH, '', $request->route);
 
     // If route is empty, set it to "/"
-    if (strlen($request->route) === 0)
+    if (strlen($request->route) === 0) {
       $request->route = '/';
+    }
 
     $routeFound = false;
 
@@ -153,7 +156,7 @@ class Router {
         $cb = self::$errors[404];
         $cb();
       } else {
-        echo ('404 Not Found');
+        echo '404 Not Found';
       }
     }
   }
