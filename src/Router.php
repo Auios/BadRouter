@@ -72,14 +72,14 @@ class Router {
   public static function render(string $view, array $locals = [], ?string $layout = '/layout'): void {
     extract($locals);
     ob_start();
-    include(VIEWS_PATH . $view . '.php');
+    include($_SERVER['DOCUMENT_ROOT'] . '/' . VIEWS_PATH . $view . '.php');
     $content = ob_get_clean();
 
     if ($layout == null) {
       $output = $content;
     } else {
       ob_start();
-      include(VIEWS_PATH . $layout . '.php');
+      include($_SERVER['DOCUMENT_ROOT'] . '/' . VIEWS_PATH . $layout . '.php');
       $output = ob_get_clean();
     }
 
