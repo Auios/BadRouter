@@ -29,3 +29,5 @@ class Request {
     $this->time = $server['REQUEST_TIME_FLOAT'] ?? null;
   }
 }
+
+?>

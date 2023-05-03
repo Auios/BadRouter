@@ -127,6 +127,9 @@ Log types:
 * Renamed
 * Updated
 
+## v0.4.2 (2023-05-03)
+* Fixed bug in URI parsing
+
 ## v0.4.1 (2023-05-02)
 * Fixed file search path missing a slash
 

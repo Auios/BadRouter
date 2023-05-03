@@ -85,3 +85,5 @@ class Mime {
     return self::$mimes[$ext] ?? 'text/plain';
   }
 }
+
+?>

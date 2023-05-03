@@ -98,11 +98,17 @@ class Router {
   public static function run(): void {
     // Defines
     define('BASE_PATH', self::$base_path);
-    define('PUBLIC_PATH', BASE_PATH . self::$public_dir);
+    define('PUBLIC_PATH', self::$public_dir);
     define('VIEWS_PATH', self::$views_dir);
 
     // Serve static files from the public directory?
-    $filename = $_SERVER['DOCUMENT_ROOT'] . '/' . PUBLIC_PATH . $_SERVER['REQUEST_URI'];
+    $resource = str_replace(BASE_PATH, '', $_SERVER['REQUEST_URI']);
+    if(isset($_SERVER['QUERY_STRING'])) {
+      $resource = str_replace('?' . $_SERVER['QUERY_STRING'], '', $resource);
+    }
+
+    $filename = $_SERVER['DOCUMENT_ROOT'] . BASE_PATH . '/' . PUBLIC_PATH . $resource;
+
     if (file_exists($filename) && is_file($filename)) {
       header('Content-type: ' . Mime::Get($filename));
       header('Content-Disposition: inline;');
@@ -161,3 +167,5 @@ class Router {
     }
   }
 }
+
+?>
