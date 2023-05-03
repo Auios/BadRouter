@@ -127,6 +127,9 @@ Log types:
 * Renamed
 * Updated
 
+## v0.4.4 (2023-05-03)
+* Fixed bug with fetching views using relative directory paths
+
 ## v0.4.3 (2023-05-03)
 * Fixed incorrect Content-Type for 404
 
