@@ -127,6 +127,9 @@ Log types:
 * Renamed
 * Updated
 
+## v0.4.1 (2023-05-02)
+* Fixed file search path missing a slash
+
 ## v0.4.0 (2023-05-01)
 * Added 74 MIME types
 * Changed static files automatically fetched and no longer need PUBLIC_PATH to be specified
