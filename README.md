@@ -127,6 +127,9 @@ Log types:
 * Renamed
 * Updated
 
+## v0.4.3 (2023-05-03)
+* Fixed incorrect Content-Type for 404
+
 ## v0.4.2 (2023-05-03)
 * Fixed bug in URI parsing
 
