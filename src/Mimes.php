@@ -80,9 +80,8 @@ class Mime {
     '7z' => 'application/x-7z-compressed'
   ];
 
-  public static function Get(string $filename): string {
-    $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    return self::$mimes[$ext] ?? 'text/plain';
+  public static function Get(string $type): string {
+    return self::$mimes[$type] ?? 'text/plain';
   }
 }
 

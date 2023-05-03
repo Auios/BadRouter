@@ -110,7 +110,7 @@ class Router {
     $filename = $_SERVER['DOCUMENT_ROOT'] . BASE_PATH . '/' . PUBLIC_PATH . $resource;
 
     if (file_exists($filename) && is_file($filename)) {
-      header('Content-type: ' . Mime::Get($filename));
+      self::set_content_type(pathinfo($filename, PATHINFO_EXTENSION));
       header('Content-Disposition: inline;');
       header('Cache-Control: max-age=2600000');
       readfile($filename);
