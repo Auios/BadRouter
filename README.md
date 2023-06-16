@@ -5,7 +5,7 @@ A minimalist router inspired by Ruby's Sinatra router.
 Visit the official documentation page here: https://badrouter.badluck.io
 
 # Install
-**1.** Run `composer require auios/badrouter` in your project directory to install the package and its dependencies.
+**1.** Run `composer require badluck/badrouter` in your project directory to install the package and its dependencies.
 
 **2.** Require the autoloader. At the beginning of your PHP file, require the Composer autoloader by adding this line of code:
 ```php
@@ -13,6 +13,8 @@ require_once('./vendor/autoload.php');
 ```
 
 **3.** Use the `Router` static class.
+
+You can use `::get`, `::post`, `::put`, and `::delete`. BadRouter supports dynamic routes in `{braces}`.
 ```php
 Router::get('/user/{id}', function ($id) {
   $locals = [
@@ -23,6 +25,7 @@ Router::get('/user/{id}', function ($id) {
 ```
 
 **4.** Configure the view and public directories.
+
 The `public` directory is where the router will search for static files if the URI is not a route.
 The `views` directry is where `Router::render` will search when rendering pages.
 ```php
