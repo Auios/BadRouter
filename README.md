@@ -23,9 +23,11 @@ Router::get('/user/{id}', function ($id) {
 ```
 
 **4.** Configure the view and public directories.
+The `public` directory is where the router will search for static files if the URI is not a route.
+The `views` directry is where `Router::render` will search when rendering pages.
 ```php
-Router::set_public('/public');
-Router::set_views(__DIR__ . '/views');
+Router::set_public('public');
+Router::set_views('views');
 ```
 
 **5.** After the router is configured, run it.
@@ -33,7 +35,7 @@ Router::set_views(__DIR__ . '/views');
 Router::run();
 ```
 
-# Usage example
+# Full Usage example
 ```php
 <?php
 require_once('./vendor/autoload.php');
@@ -67,7 +69,7 @@ Router::get('/about', function() {
 
 Router::get('/message', function() {
   Router::set_content_type('json');
-  echo json_encode(array('message' => 'About Us'));
+  Router::json(['message' => 'About Us']);
 });
 
 Router::get('/redirectMe', function() {
@@ -96,7 +98,7 @@ Router::get('/admin', function() {
 
 // POST
 Router::post('/api/login', function() {
-  echo json_encode([
+  Router::json([
     'success' => true,
   ]);
 });
@@ -110,8 +112,8 @@ Router::set_error(404, function() {
 });
 
 // Configure directories
-Router::set_public('/public');
-Router::set_views(__DIR__ . '/views');
+Router::set_public('public');
+Router::set_views('views');
 
 // Run
 Router::run();
