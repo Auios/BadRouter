@@ -101,9 +101,11 @@ class Router {
     define('PUBLIC_PATH', self::$public_dir);
     define('VIEWS_PATH', self::$views_dir);
 
+    $request_uri = $_SERVER['REQUEST_URI'] ?? '/';
+
     // Serve static files from the public directory?
-    $resource = str_replace(BASE_PATH, '', $_SERVER['REQUEST_URI']);
-    if(isset($_SERVER['QUERY_STRING'])) {
+    $resource = str_replace(BASE_PATH, '', $request_uri);
+    if (isset($_SERVER['QUERY_STRING'])) {
       $resource = str_replace('?' . $_SERVER['QUERY_STRING'], '', $resource);
     }
 
@@ -159,8 +161,8 @@ class Router {
       self::set_content_type('html');
       http_response_code(404);
       if (isset(self::$errors[404])) {
-        $cb = self::$errors[404];
-        $cb();
+        $route_callback = self::$errors[404];
+        $route_callback();
       } else {
         echo '404 Not Found';
       }
@@ -169,3 +171,4 @@ class Router {
 }
 
 ?>
+
