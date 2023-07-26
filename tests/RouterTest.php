@@ -1,11 +1,12 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
+
 use PHPUnit\Framework\TestCase;
 use BadRouter\Router;
 
 class RouterTest extends TestCase {
-  public function testCanBeCreatedFromValidEmail(): void {
-    // Router::run();
+    public function testCanBeCreatedFromValidEmail(): void {
+        // Router::run();
 
-    $this->assertSame('aaa', 'baaa');
-  }
+        $this->assertSame('aaa', 'baaa');
+    }
 }
