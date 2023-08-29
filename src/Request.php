@@ -3,8 +3,8 @@
 namespace BadRouter;
 
 class Request {
-    public ?string $route;
-    public ?string $method;
+    public string $route;
+    public string $method;
     public ?string $address;
     public ?int $port;
     public ?string $platform;
@@ -16,7 +16,7 @@ class Request {
     public ?float $time;
 
     public function __construct(array $server) {
-        $this->route = parse_url($server['REQUEST_URI'], PHP_URL_PATH);
+        $this->route = (string)parse_url($server['REQUEST_URI'] ?? '/', PHP_URL_PATH);
         $this->method = $server['REQUEST_METHOD'] ?? null;
         $this->address = $server['REMOTE_ADDR'] ?? null;
         $this->port = $server['REMOTE_PORT'] ?? null;
